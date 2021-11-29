@@ -1,0 +1,12 @@
+{
+  "execMap": {
+    "js": "node -r esm"
+  },
+  "env": {
+    "DEBUG": "stm:*",
+    "DEBUG_NAMESPACE": "stm:awr",
+    "ERROR_NAMESPACE": "stm:awr:error",
+    "PORT": "3222"
+  },
+  "watch":  ["src"]
+}
