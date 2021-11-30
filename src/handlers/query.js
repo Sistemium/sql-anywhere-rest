@@ -16,8 +16,16 @@ export default async function (ctx) {
 
   const { select, from, where, group, order, having, call } = body;
 
+  if (call) {
+    ctx.throw(400, 'CALL is not supported');
+  }
+
+  if (!select) {
+    ctx.throw(400, 'SELECT is required');
+  }
+
   const sql = lo.filter([
-    call && `CALL ${call}`,
+    // call && `CALL ${call}`,
     select && `SELECT ${stringOrJoin(select, ', ')}`,
     from && `  FROM ${stringOrJoin(from)}`,
     where && ` WHERE ${stringOrJoin(where, ' and ')}`,
@@ -26,16 +34,16 @@ export default async function (ctx) {
     order && ` ORDER BY ${stringOrJoin(order, ', ')}`,
   ]).join('\n');
 
-  // debug('sql', sql);
 
   try {
     if (parseOnly) {
       ctx.body = sql;
     } else {
       ctx.body = await conn.execImmediate(sql);
+      debug('result', ctx.body.length);
     }
   } catch (e) {
-    ctx.throw(e.message, 400);
+    ctx.throw(400, e.message);
   }
 
   await conn.disconnect();
