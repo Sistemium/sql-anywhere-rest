@@ -6,8 +6,6 @@ const { debug } = log('query');
 
 export default async function (ctx) {
 
-  const conn = new Anywhere();
-  await conn.connect();
   const { body, headers: { 'parse-only': parseOnly } } = ctx.request;
 
   ctx.assert(lo.isObject(body));
@@ -34,13 +32,15 @@ export default async function (ctx) {
     order && ` ORDER BY ${stringOrJoin(order, ', ')}`,
   ]).join('\n');
 
+  const conn = new Anywhere();
+  await conn.connect();
 
   try {
     if (parseOnly) {
       ctx.body = sql;
     } else {
       ctx.body = await conn.execImmediate(sql);
-      debug('result', ctx.body.length);
+      debug('result', ctx.body.length, lo.filter([select, from, where, group ]));
     }
   } catch (e) {
     ctx.throw(400, e.message);
