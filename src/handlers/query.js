@@ -35,12 +35,14 @@ export default async function (ctx) {
   const conn = new Anywhere();
   await conn.connect();
 
+  debug('query', lo.filter([select, from, where, group]));
+
   try {
     if (parseOnly) {
       ctx.body = sql;
     } else {
       ctx.body = await conn.execImmediate(sql);
-      debug('result', ctx.body.length, lo.filter([select, from, where, group ]));
+      debug('result', ctx.body.length);
     }
   } catch (e) {
     ctx.throw(400, e.message);
