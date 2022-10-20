@@ -36,6 +36,7 @@ export default async function (ctx) {
       debug('result', ctx.body.length);
     }
   } catch (e) {
+    await conn.disconnect();
     ctx.throw(400, e.message);
   }
 
