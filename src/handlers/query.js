@@ -1,6 +1,7 @@
 import Anywhere from 'sistemium-sqlanywhere';
 import lo from 'lodash';
 import log from 'sistemium-debug';
+import { queryToSQL } from '../sql';
 
 const { debug } = log('query');
 
@@ -12,7 +13,7 @@ export default async function (ctx) {
 
   // debug('body', body);
 
-  const { select, from, where, group, order, having, call } = body;
+  const { select, call } = body;
 
   if (call) {
     ctx.throw(400, 'CALL is not supported');
@@ -22,20 +23,10 @@ export default async function (ctx) {
     ctx.throw(400, 'SELECT is required');
   }
 
-  const sql = lo.filter([
-    // call && `CALL ${call}`,
-    select && `SELECT ${stringOrJoin(select, ', ')}`,
-    from && `  FROM ${stringOrJoin(from)}`,
-    where && ` WHERE ${stringOrJoin(where, ' and ')}`,
-    group && ` GROUP BY ${stringOrJoin(group, ', ')}`,
-    having && `HAVING ${stringOrJoin(having, ', ')}`,
-    order && ` ORDER BY ${stringOrJoin(order, ', ')}`,
-  ]).join('\n');
+  const sql = queryToSQL(body);
 
   const conn = new Anywhere();
   await conn.connect();
-
-  debug('query', lo.filter([select, from, where, group]));
 
   try {
     if (parseOnly) {
@@ -50,10 +41,4 @@ export default async function (ctx) {
 
   await conn.disconnect();
 
-}
-
-function stringOrJoin(stringOrArray, join = ' ') {
-  return Array.isArray(stringOrArray)
-    ? stringOrArray.join(join)
-    : stringOrArray;
 }
