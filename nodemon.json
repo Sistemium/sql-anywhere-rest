@@ -1,6 +1,6 @@
 {
   "execMap": {
-    "js": "node -r esm"
+    "ts": "tsx"
   },
   "env": {
     "DEBUG": "stm:*",
@@ -8,5 +8,6 @@
     "ERROR_NAMESPACE": "stm:awr:error",
     "PORT": "3222"
   },
+  "ext": "ts",
   "watch":  ["src"]
 }

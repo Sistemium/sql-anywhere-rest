@@ -5,13 +5,19 @@ import koaBody from 'koa-bodyparser';
 import logger from 'koa-logger';
 import auth from 'sistemium-auth/lib/middleware';
 
-import query from './handlers/query'
+import query from './handlers/query';
 
 const { debug } = log('api');
 
+interface AnywhereRestConfig {
+  requiredRole?: string;
+}
+
 export default class AnywhereRest {
 
-  constructor(config = {}) {
+  app: Koa;
+
+  constructor(config: AnywhereRestConfig = {}) {
 
     const { requiredRole } = config;
     const app = new Koa();
@@ -31,9 +37,9 @@ export default class AnywhereRest {
     app.use(router.routes());
   }
 
-  listen(port) {
-    console.assert(port, 'port must be specified');
-    this.app.listen(port);
+  listen(port: number | string) {
+    console.assert(!!port, 'port must be specified');
+    this.app.listen(Number(port));
     debug('listen', port);
   }
 
