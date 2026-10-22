@@ -25,21 +25,22 @@ export default async function (ctx: Context) {
 
   const sql = queryToSQL(body);
 
+  // parse-only needs no database connection
+  if (parseOnly) {
+    ctx.body = sql;
+    return;
+  }
+
   const conn = new Anywhere();
   await conn.connect();
 
   try {
-    if (parseOnly) {
-      ctx.body = sql;
-    } else {
-      ctx.body = await conn.execImmediate(sql);
-      debug('result', (ctx.body as unknown[]).length);
-    }
+    ctx.body = await conn.execImmediate(sql);
+    debug('result', (ctx.body as unknown[]).length);
   } catch (e) {
-    await conn.disconnect();
     ctx.throw(400, (e as Error).message);
+  } finally {
+    await conn.disconnect();
   }
-
-  await conn.disconnect();
 
 }

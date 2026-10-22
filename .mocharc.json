@@ -1,0 +1,6 @@
+{
+  "node-option": ["import=tsx"],
+  "require": ["test/fakeRoles.ts"],
+  "spec": ["test/**/*.test.ts"],
+  "timeout": 5000
+}
