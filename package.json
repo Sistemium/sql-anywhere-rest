@@ -1,41 +1,47 @@
 {
   "name": "sql-anywhere-rest",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "",
   "main": "dist/api.js",
+  "engines": {
+    "node": ">=20.19"
+  },
   "scripts": {
     "dev": "nodemon src/api.ts",
     "build": "rm -rf dist && tsc",
-    "start": "node dist/api.js"
+    "start": "node dist/api.js",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p test",
+    "test": "mocha"
   },
   "dependencies": {
-    "@koa/router": "^10.1.1",
-    "koa": "^2.13.4",
-    "koa-bodyparser": "^4.3.0",
-    "koa-logger": "^3.2.1",
-    "lodash": "^4.17.21",
-    "sistemium-auth": "^1.0.0",
-    "sistemium-debug": "^1.0.1",
-    "sistemium-sqlanywhere": "^1.3.0"
+    "@koa/router": "^15.7.0",
+    "koa": "^3.2.1",
+    "koa-bodyparser": "^4.4.1",
+    "koa-logger": "^4.0.0",
+    "lodash": "^4.18.1",
+    "sistemium-auth": "1.2.6",
+    "sistemium-debug": "^1.1.3",
+    "sistemium-sqlanywhere": "^2.0.0"
   },
   "devDependencies": {
-    "@types/chai": "^5.2.3",
-    "@types/koa": "^3.0.2",
-    "@types/koa__router": "^12.0.5",
+    "@types/koa": "^3.0.3",
     "@types/koa-bodyparser": "^4.3.13",
     "@types/koa-logger": "^3.1.5",
-    "@types/lodash": "^4.17.24",
+    "@types/lodash": "^4.17.27",
     "@types/mocha": "^10.0.10",
-    "@types/supertest": "^7.2.0",
-    "chai": "^4.3.6",
-    "dayjs": "^1.11.3",
-    "mocha": "^8.4.0",
-    "nodemon": "^2.0.19",
-    "supertest": "^6.2.4",
-    "tsx": "^4.21.0",
-    "typescript": "^6.0.2"
+    "@types/node": "^24.0.0",
+    "@types/supertest": "^7.2.1",
+    "mocha": "^12.0.3",
+    "nodemon": "^3.1.14",
+    "supertest": "^7.3.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "allowScripts": {
+    "github:Sistemium/node-sqlanywhere#f1d55ee3b9f0d9d533eae076431112a525cf1ffe": true,
+    "esbuild@0.28.2": true
+  }
 }
