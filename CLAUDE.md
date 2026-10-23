@@ -39,6 +39,6 @@ On this Mac the SQL Anywhere client is x86_64-only: run install, tests and the s
 ## Key Libraries
 
 - `sistemium-sqlanywhere` — SQL Anywhere database driver (connect/execImmediate/disconnect); each connection runs in a child process, the native `sqlanywhere` module is built by node-gyp on install
-- `sistemium-auth` — token-based auth middleware (optional, enabled when `REQUIRED_ROLE` is set). Pinned to 1.2.6: 1.3.0 changed the `lib/middleware` signature to `middleware(auth, config)`, and the old call gets 401 on every request
+- `sistemium-auth` — token-based auth middleware (optional, enabled when `REQUIRED_ROLE` is set). Needs ^1.3.1: SAW calls `middleware(config)`, which the deprecated 1.3.0 dropped (every request got 401); 1.3.1 accepts both `middleware(config)` and `middleware(auth, config)`
 - `sistemium-debug` — debug logging with namespace `stm:awr`
 - `tsx` — TypeScript execution for development and tests
